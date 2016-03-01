@@ -12,6 +12,10 @@ func NewJsonObject(data []byte) (JsonObject, error) {
 	return jsonData.(JsonObject), nil
 }
 
+func (json JsonObject) HasKey(key string) bool {
+	return json[key] != nil
+}
+
 func (json JsonObject) GetObject(key string) JsonObject {
 	return json[key].(JsonObject)
 }
