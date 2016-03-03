@@ -12,7 +12,7 @@ import (
 )
 
 type RestClient struct {
-	client *http.Client
+	client     *http.Client
 	headerInfo map[string]string
 }
 
@@ -25,14 +25,14 @@ func NewRestClient() (restClient RestClient, err error) {
 		Jar: cookieJar,
 	}
 	if err != nil {
-		return 
+		return
 	}
 	restClient.headerInfo = map[string]string{"Content-Type": "application/json"}
 
 	return
 }
 
-func (restClient RestClient) AddHeader (headerKey string, headerValue string) {
+func (restClient RestClient) AddHeader(headerKey string, headerValue string) {
 	restClient.headerInfo[headerKey] = headerValue
 }
 
@@ -60,9 +60,9 @@ func (restClient RestClient) doGetString(method string, url string, payload []by
 		req, err = http.NewRequest(method, url, nil)
 	}
 	if err != nil {
-		return 
+		return
 	}
-	
+
 	// set all required headers
 	for headerKey, headerValue := range restClient.headerInfo {
 		req.Header.Add(headerKey, headerValue)
@@ -76,7 +76,6 @@ func (restClient RestClient) doGetString(method string, url string, payload []by
 	if err != nil {
 		return
 	}
-// fmt.Printf("FJAR: url: >>%s<<, body: >>%s<<\n\n\n", url, body)
 	return
 }
 

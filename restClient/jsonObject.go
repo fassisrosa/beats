@@ -35,4 +35,3 @@ func (json JsonObject) GetInteger(key string) int64 {
 func (json JsonObject) GetBoolean(key string) bool {
 	return json[key].(bool)
 }
-
