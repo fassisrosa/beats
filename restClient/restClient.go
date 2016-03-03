@@ -36,23 +36,25 @@ func (restClient RestClient) AddHeader(headerKey string, headerValue string) {
 	restClient.headerInfo[headerKey] = headerValue
 }
 
-func (restClient RestClient) GetObject(method string, url string, payload []byte) (jsonObject JsonObject, err error) {
-	body, err := restClient.doGetString(method, url, payload)
+func (restClient RestClient) GetObject(method string, url string, payload []byte) (jsonObject JsonObject, headers http.Header, err error) {
+	body, headers, err := restClient.doGetString(method, url, payload)
 	if err != nil {
-		return nil, err
+		return 
 	}
-	return NewJsonObject(body)
+	jsonObject, err = NewJsonObject(body)
+	return 
 }
 
-func (restClient RestClient) GetArray(method string, url string, payload []byte) (jsonObject JsonArray, err error) {
-	body, err := restClient.doGetString("GET", url, payload)
+func (restClient RestClient) GetArray(method string, url string, payload []byte) (jsonObject JsonArray, headers http.Header, err error) {
+	body, headers, err := restClient.doGetString("GET", url, payload)
 	if err != nil {
-		return nil, err
+		return
 	}
-	return NewJsonArray(body)
+	jsonObject, err = NewJsonArray(body)
+	return
 }
 
-func (restClient RestClient) doGetString(method string, url string, payload []byte) (body []byte, err error) {
+func (restClient RestClient) doGetString(method string, url string, payload []byte) (body []byte, headers http.Header, err error) {
 	var req *http.Request
 	if payload != nil {
 		req, err = http.NewRequest(method, url, bytes.NewBuffer(payload))
@@ -76,6 +78,7 @@ func (restClient RestClient) doGetString(method string, url string, payload []by
 	if err != nil {
 		return
 	}
+	headers = resp.Header
 	return
 }
 
